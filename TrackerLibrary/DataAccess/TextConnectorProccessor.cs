@@ -253,6 +253,8 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
                 
             }
+
+            File.WriteAllLines(fileName.FullFilePath(), lines);
         }
 
         private static string ConvertTeamListToString(List<TeamModel> teams)
@@ -305,7 +307,26 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
             foreach (List<MatchupModel> listOfMUs in rounds)
             {
-                output += $"{prize.Id}|";
+                output += $"{ConvertMatchupListToString(listOfMUs)}|";
+            }
+
+            output = output.Substring(0, output.Length - 1);
+
+            return output;
+        }
+
+        private static string ConvertMatchupListToString(List<MatchupModel> matchUps)
+        {
+            string output = "";
+
+            if (matchUps.Count == 0)
+            {
+                return "";
+            }
+
+            foreach (MatchupModel mu in matchUps)
+            {
+                output += $"{mu.Id}^";
             }
 
             output = output.Substring(0, output.Length - 1);

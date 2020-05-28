@@ -90,7 +90,7 @@ namespace TrackerLibrary.DataAccess
             return TeamFile.FullFilePath().LoadFile().ConvertToTeamModel(PeopleFile);
         }
 
-        public TournamentModel CreateTournament(TournamentModel model)
+        public void CreateTournament(TournamentModel model)
         {
             List<TournamentModel> tournaments = TournamentFile
                 .FullFilePath().
