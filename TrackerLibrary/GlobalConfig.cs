@@ -34,4 +34,6 @@ namespace TrackerLibrary
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
     }
+
+    //comment
 }
