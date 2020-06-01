@@ -90,7 +90,7 @@ namespace TrackerLibrary.DataAccess
             return TeamFile.FullFilePath().LoadFile().ConvertToTeamModel(PeopleFile);
         }
 
-        public void CreateTournament(TournamentModel model)
+        public TournamentModel CreateTournament(TournamentModel model)
         {
             List<TournamentModel> tournaments = TournamentFile
                 .FullFilePath().
@@ -107,6 +107,8 @@ namespace TrackerLibrary.DataAccess
             model.Id = currentId;
             tournaments.Add(model);
             tournaments.SaveToTournamentFile(TournamentFile);
+
+            return model;
         }
     }
 }
