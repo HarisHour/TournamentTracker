@@ -136,6 +136,13 @@ namespace ProjectTrackerUI
             tm.EnteredTeams = selectedTeams;
             tm.Prizes = selectedPrizes;
 
+            //TODO - Wire up matchups
+            TournamentLogic.CreateRounds(tm);
+
+
+
+
+
             GlobalConfig.Connection.CreateTournament(tm);
 
             //create all of the prizes entries
