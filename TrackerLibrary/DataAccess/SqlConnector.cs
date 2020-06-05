@@ -178,6 +178,7 @@ namespace TrackerLibrary.DataAccess
                         {
                             t.Add("@ParentMatchupId", entry.ParentMatchup.Id);
                         }
+
                         if(entry.TeamCompeting == null)
                         {
                             t.Add("@TeamCompetingId", null);
