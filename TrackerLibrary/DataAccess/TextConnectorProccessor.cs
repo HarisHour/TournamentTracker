@@ -181,8 +181,11 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             //id, TournamentName, EntreeFee, (EnteredTeams - id1|id2|id3|), (Prizes - id1|id2|id3), 
             //(Rounds - id^id^id|id^id^id|id^id^id)
             List<TournamentModel> list = new List<TournamentModel>();
+            List<MatchupModel> matchups = GlobalConfig.MatchupFile.FullFilePath().LoadFile().ConvertToMUModel();
+            List<TeamModel> teams = teamFile.FullFilePath().LoadFile().ConvertToTeamModel(peopleFile);
+            List<PrizeModel> prizes = prizeFile.FullFilePath().LoadFile().ConvertToPrizeModels();
 
-            foreach(String line in lines)
+            foreach (String line in lines)
             {
                 string[] cols = line.Split(',');
 
@@ -193,7 +196,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
                 //team column
                 string[] enteredTeams = cols[3].Split('|');
-                List<TeamModel> teams = teamFile.FullFilePath().LoadFile().ConvertToTeamModel(peopleFile);
+                
 
                 foreach (TeamModel team in teams)
                 {
@@ -210,7 +213,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
                 //prize column
                 string[] pr = cols[4].Split('|');
-                List<PrizeModel> prizes = prizeFile.FullFilePath().LoadFile().ConvertToPrizeModels();
+                
 
                 foreach(PrizeModel prize in prizes)
                 {
@@ -223,17 +226,23 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                     }
                 }
 
+                //rounds column
+                string[] rounds = cols[5].Split('|');
+                List<MatchupModel> ms = new List<MatchupModel>();
 
+                foreach (string round in rounds)
+                {
+                    string[] msText = round.Split('^');
 
+                    foreach (string muModelTextId in msText)
+                    {
+                        ms.Add(matchups.Where(x => x.Id == int.Parse(muModelTextId)).First());
+                    }
 
-
-
-
-
+                    tourn.Rounds.Add(ms);
+                }
 
                 list.Add(tourn);
-
-
             }
 
             return list;
@@ -334,7 +343,27 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             return output;
         }
 
-        public static List<MatchupModel> ConvertToMUModel(this List<String> lines, string MUEFile, string TeamFile, string PeopleFile)
+        private static string ConvertMUEListToString(List<MatchupEntryModel> mues)
+        {
+            string output = "";
+
+            if (mues.Count == 0)
+            {
+                return "";
+            }
+
+            foreach (MatchupEntryModel mue in mues)
+            {
+                output += $"{mue.Id}|";
+            }
+
+            output = output.Substring(0, output.Length - 1);
+
+            return output;
+
+        }
+
+        public static List<MatchupModel> ConvertToMUModel(this List<String> lines)
         {
             List<MatchupModel> output = new List<MatchupModel>();
 
@@ -345,7 +374,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                 string[] cols = line.Split(',');
                 mu.Id = int.Parse(cols[0]);
 
-                List<MatchupEntryModel> muentries = MUEFile.FullFilePath().LoadFile().ConvertToMUEModel();
+                List<MatchupEntryModel> muentries = GlobalConfig.MatchupEntryFile.FullFilePath().LoadFile().ConvertToMUEModel();
                 string[] entries = cols[1].Split('|');
 
                 foreach (MatchupEntryModel entry in muentries)
@@ -358,16 +387,31 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                         }
                     }
                 }
-                mu.Winner = LookupTeamById(int.Parse(cols[2]), TeamFile, PeopleFile);
+                if (cols[2].Length == 0)
+                {
+                    mu.Winner = null;
+                }
+                else
+                {
+                    mu.Winner = LookupTeamById(int.Parse(cols[2]));
+                }
+                
                 mu.MatchupRound =int.Parse(cols[3]);
-
+                output.Add(mu);
             }
+            return output;
         }
 
-        private static TeamModel LookupTeamById(int id, string TeamFile, string PeopleFile)
+        private static TeamModel LookupTeamById(int id)
         {
-            List<TeamModel> teams = TeamFile.FullFilePath().LoadFile().ConvertToTeamModel(PeopleFile);
+            List<TeamModel> teams = GlobalConfig.TeamFile.FullFilePath().LoadFile().ConvertToTeamModel(GlobalConfig.PeopleFile);
             return teams.Where(x => x.Id == id).First(); 
+        }
+
+        private static MatchupModel LookupMUById(int id)
+        {
+            List<MatchupModel> matchups = GlobalConfig.MatchupFile.FullFilePath().LoadFile().ConvertToMUModel();
+            return matchups.Where(x => x.Id == id).First();
         }
 
         public static List<MatchupEntryModel> ConvertToMUEModel(this List<String> lines)
@@ -381,9 +425,27 @@ namespace TrackerLibrary.DataAccess.TextHelpers
                 string[] cols = line.Split(',');
 
                 mue.Id = int.Parse(cols[0]);
-                mue.TeamCompeting.Id = int.Parse(cols[1]);
-                mue.Score = int.Parse(cols[2]);
-                mue.ParentMatchup.Id = int.Parse(cols[3]);
+                if(cols[1].Length == 0)
+                {
+                    mue.TeamCompeting = null;
+                }
+                else
+                {
+                    mue.TeamCompeting = LookupTeamById(int.Parse(cols[1]));
+                }
+                
+                mue.Score = double.Parse(cols[2]);
+
+                int parentId = 0;
+                if (int.TryParse(cols[3], out parentId))
+                {
+                    mue.ParentMatchup = LookupMUById(int.Parse(cols[3]));
+                }
+                else
+                {
+                    mue.ParentMatchup = null;
+                }
+                
 
                 output.Add(mue);
             }
@@ -406,15 +468,80 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
         public static void SaveMatchupToFile (this MatchupModel matchup, string matchupFile, string MatchupEntryFile)
         {
+            List<MatchupModel> matchups = GlobalConfig.MatchupFile.FullFilePath().LoadFile().ConvertToMUModel();
+
+            int currentId = 1;
+
+            if (matchups.Count > 0)
+            {
+                currentId = matchups.OrderByDescending(x => x.Id).First().Id + 1;
+            }
+
+            matchup.Id = currentId;
+
+            matchups.Add(matchup);
+            List<MatchupEntryModel> entriesWithIds = new List<MatchupEntryModel>();
+
             foreach (MatchupEntryModel entry in matchup.Entries)
             {
-                entry.SaveMUEToFile(MatchupEntryFile);
+             MatchupEntryModel entryWithID =   entry.SaveMUEToFile();
+             entriesWithIds.Add(entryWithID);
             }
+
+            matchup.Entries = entriesWithIds;
+            //save file
+
+            List<String> lines = new List<string>();
+
+            foreach(MatchupModel mu in matchups)
+            {
+                string winner = "";
+                if (mu.Winner != null)
+                {
+                    winner = mu.Winner.Id.ToString();
+                }
+                lines.Add($"{mu.Id},{ConvertMUEListToString(mu.Entries)},{winner}, {mu.MatchupRound}");
+            }
+
+            File.WriteAllLines(GlobalConfig.MatchupFile.FullFilePath(), lines);
         }
 
-        public static void SaveMUEToFile(this MatchupEntryModel mue, string MUEFile)
+        public static MatchupEntryModel SaveMUEToFile(this MatchupEntryModel mue)
         {
+            List<MatchupEntryModel> entries = GlobalConfig.MatchupEntryFile.FullFilePath().LoadFile().ConvertToMUEModel();
 
+            int currentId = 1;
+
+            if(entries.Count > 0)
+            {
+                currentId = entries.OrderByDescending(x => x.Id).First().Id + 1;
+            }
+
+            mue.Id = currentId;
+            entries.Add(mue);
+
+            //save to file
+
+            List<String> lines = new List<string>();
+            foreach (MatchupEntryModel muEntry in entries)
+            {
+
+                string parent = "";
+                if(muEntry.ParentMatchup != null)
+                {
+                    parent = muEntry.ParentMatchup.Id.ToString();
+                }
+                string teamCompeting = "";
+                if(muEntry.TeamCompeting != null)
+                {
+                    teamCompeting = muEntry.TeamCompeting.Id.ToString();
+                }
+
+                lines.Add($"{muEntry.Id},{teamCompeting},{muEntry.Score},{parent}");
+            }
+
+            File.WriteAllLines(GlobalConfig.MatchupEntryFile.FullFilePath(), lines);
+            return mue;
         }
 
     }

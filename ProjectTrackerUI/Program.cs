@@ -21,7 +21,7 @@ namespace ProjectTrackerUI
             //Initialize the database connections
 
 
-            TrackerLibrary.GlobalConfig.InitializeConnections(DatabaseType.Sql);
+            TrackerLibrary.GlobalConfig.InitializeConnections(DatabaseType.TextFile);
             
             
 
