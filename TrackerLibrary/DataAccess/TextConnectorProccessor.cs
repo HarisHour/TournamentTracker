@@ -62,6 +62,7 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             {
                 String line = $"{p.Id},{p.PlaceNumber},{p.PlaceName},{p.PrizeAmount},{p.PrizePercentage}";
                 lines.Add(line);
+
             }
 
             File.WriteAllLines(fileName.FullFilePath(), lines);
