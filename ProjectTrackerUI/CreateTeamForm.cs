@@ -43,14 +43,7 @@ namespace ProjectTrackerUI
             teamMembersListbox.DisplayMember = "FullName";
         }
 
-        private void CreateSampleData()
-        {
-            availableTeamMembers.Add(new PersonModel { FirstName = "Haris", LastName = "Hour" });
-            availableTeamMembers.Add(new PersonModel { FirstName = "John", LastName = "Smith" });
-
-            selectedTeamMembers.Add(new PersonModel { FirstName = "John", LastName = "Doe" });
-            selectedTeamMembers.Add(new PersonModel { FirstName = "Jill", LastName = "Doe" });
-        }
+    
 
         private void createMemberButton_Click(object sender, EventArgs e)
         {

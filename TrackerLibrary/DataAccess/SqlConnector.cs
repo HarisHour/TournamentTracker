@@ -10,7 +10,7 @@ using TrackerLibrary.Models;
 
 namespace TrackerLibrary.DataAccess
 {
-    public class SqlConnector : IDataConnection
+    public class SqlConnector 
     {
         public PrizeModel CreatePrize(PrizeModel model)
         {
@@ -208,6 +208,39 @@ namespace TrackerLibrary.DataAccess
             }
 
             return personList;
+
+        }
+
+        public List<TournamentModel> GetTournaments_All()
+        {
+            List<TournamentModel> tournList;
+
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GlobalConfig.CnnString("Tournaments")))
+            {
+                tournList = connection.Query<TournamentModel>("dbo.spTournaments_GetAll").ToList();
+
+                foreach (TournamentModel tm in tournList)
+                {
+                    //populate prizes
+                    tm.Prizes = connection.Query<PrizeModel>("dbo.spPrizes_GetByTournament").ToList();
+                    
+                    //populate teams
+                    tm.EnteredTeams = connection.Query<TeamModel>("dbo.spTeam_GetByTournament").ToList();
+
+                    foreach( TeamModel team in tm.EnteredTeams)
+                    {
+                        var p = new DynamicParameters();
+                        p.Add("@TeamId", team.Id);
+
+                        team.TeamMembers = connection.Query<PersonModel>("dbo.spTeamMembers_GetByTeam", p, commandType: CommandType.StoredProcedure).ToList();
+                    }
+                }
+
+                
+
+            }
+
+            return tournList;
 
         }
 

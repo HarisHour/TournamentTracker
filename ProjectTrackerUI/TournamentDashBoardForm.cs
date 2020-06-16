@@ -7,14 +7,51 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TrackerLibrary;
+using TrackerLibrary.Models;
 
 namespace ProjectTrackerUI
 {
-    public partial class TournamentDashBoardForm : Form
+    public partial class TournamentDashBoardForm : Form, ITournamentRequester
     {
+
+        List<TournamentModel> availableTournaments = GlobalConfig.Connection.GetTournaments_All();
+
+        private void WireUpLists()
+        {
+            loadExTournDropDownBox.DataSource = null;
+
+            loadExTournDropDownBox.DataSource = availableTournaments;
+            loadExTournDropDownBox.DisplayMember = "TournamentName";
+
+            
+
+        }
+
+
         public TournamentDashBoardForm()
         {
             InitializeComponent();
+
+            WireUpLists();
+        }
+
+        private void loadCrTourFormButton_Click(object sender, EventArgs e)
+        {
+            CreateTournamentForm tournform = new CreateTournamentForm(this);
+            tournform.Show();
+
+        }
+
+        private void loadTournButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        public void TournamentComplete(TournamentModel model)
+        {
+            availableTournaments.Add(model);
+            WireUpLists();
         }
     }
 }

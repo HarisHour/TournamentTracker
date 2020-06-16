@@ -74,6 +74,7 @@
     </Compile>
     <Compile Include="IPrizeRequester.cs" />
     <Compile Include="ITeamRequester.cs" />
+    <Compile Include="ITournamentRequester.cs" />
     <Compile Include="TournamentDashBoardForm.cs">
       <SubType>Form</SubType>
     </Compile>

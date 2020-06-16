@@ -43,7 +43,7 @@
             this.headerLabel5.ForeColor = System.Drawing.SystemColors.ControlText;
             this.headerLabel5.Location = new System.Drawing.Point(27, 9);
             this.headerLabel5.Name = "headerLabel5";
-            this.headerLabel5.Size = new System.Drawing.Size(397, 46);
+            this.headerLabel5.Size = new System.Drawing.Size(385, 45);
             this.headerLabel5.TabIndex = 4;
             this.headerLabel5.Text = "Tournament Dashboard";
             // 
@@ -51,7 +51,7 @@
             // 
             this.loadTournLabel.AutoSize = true;
             this.loadTournLabel.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.loadTournLabel.Location = new System.Drawing.Point(29, 68);
+            this.loadTournLabel.Location = new System.Drawing.Point(70, 68);
             this.loadTournLabel.Name = "loadTournLabel";
             this.loadTournLabel.Size = new System.Drawing.Size(290, 32);
             this.loadTournLabel.TabIndex = 11;
@@ -60,7 +60,7 @@
             // loadExTournDropDownBox
             // 
             this.loadExTournDropDownBox.FormattingEnabled = true;
-            this.loadExTournDropDownBox.Location = new System.Drawing.Point(35, 103);
+            this.loadExTournDropDownBox.Location = new System.Drawing.Point(76, 103);
             this.loadExTournDropDownBox.Name = "loadExTournDropDownBox";
             this.loadExTournDropDownBox.Size = new System.Drawing.Size(284, 25);
             this.loadExTournDropDownBox.TabIndex = 17;
@@ -69,30 +69,32 @@
             // 
             this.loadTournButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.loadTournButton.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.loadTournButton.Location = new System.Drawing.Point(35, 134);
+            this.loadTournButton.Location = new System.Drawing.Point(157, 134);
             this.loadTournButton.Name = "loadTournButton";
             this.loadTournButton.Size = new System.Drawing.Size(109, 29);
             this.loadTournButton.TabIndex = 18;
             this.loadTournButton.Text = "Load";
             this.loadTournButton.UseVisualStyleBackColor = true;
+            this.loadTournButton.Click += new System.EventHandler(this.loadTournButton_Click);
             // 
             // loadCrTourFormButton
             // 
             this.loadCrTourFormButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.loadCrTourFormButton.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.loadCrTourFormButton.Location = new System.Drawing.Point(35, 247);
+            this.loadCrTourFormButton.Location = new System.Drawing.Point(95, 230);
             this.loadCrTourFormButton.Name = "loadCrTourFormButton";
             this.loadCrTourFormButton.Size = new System.Drawing.Size(231, 83);
             this.loadCrTourFormButton.TabIndex = 23;
             this.loadCrTourFormButton.Text = "Create Tournament";
             this.loadCrTourFormButton.UseVisualStyleBackColor = true;
+            this.loadCrTourFormButton.Click += new System.EventHandler(this.loadCrTourFormButton_Click);
             // 
             // orLabel2
             // 
             this.orLabel2.AutoSize = true;
             this.orLabel2.Font = new System.Drawing.Font("Segoe UI", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.orLabel2.ForeColor = System.Drawing.Color.Black;
-            this.orLabel2.Location = new System.Drawing.Point(46, 186);
+            this.orLabel2.Location = new System.Drawing.Point(172, 178);
             this.orLabel2.Name = "orLabel2";
             this.orLabel2.Size = new System.Drawing.Size(77, 38);
             this.orLabel2.TabIndex = 24;
@@ -103,7 +105,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(435, 388);
+            this.ClientSize = new System.Drawing.Size(435, 338);
             this.Controls.Add(this.orLabel2);
             this.Controls.Add(this.loadCrTourFormButton);
             this.Controls.Add(this.loadTournButton);

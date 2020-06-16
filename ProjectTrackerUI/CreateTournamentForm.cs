@@ -18,9 +18,13 @@ namespace ProjectTrackerUI
         List<TeamModel> availableTeams = GlobalConfig.Connection.GetTeam_All();
         List<TeamModel> selectedTeams = new List<TeamModel>();
         List<PrizeModel> selectedPrizes = new List<PrizeModel>();
-        public CreateTournamentForm()
+
+        ITournamentRequester callingForm;
+        public CreateTournamentForm(ITournamentRequester caller)
         {
             InitializeComponent();
+
+            callingForm = caller;
 
             WireUpLists();
         }
@@ -71,7 +75,7 @@ namespace ProjectTrackerUI
 
         private void createPrizeButton_Click(object sender, EventArgs e)
         {
-            //Call the Create{rize form
+            //Call the Create prize form
 
             CreatePrizeForm pform = new CreatePrizeForm(this);
             pform.Show();
@@ -144,6 +148,10 @@ namespace ProjectTrackerUI
 
 
             GlobalConfig.Connection.CreateTournament(tm);
+
+            callingForm.TournamentComplete(tm);
+
+            this.Close();
 
             //create all of the prizes entries
             //create all of the team entries

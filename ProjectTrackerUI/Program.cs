@@ -21,12 +21,12 @@ namespace ProjectTrackerUI
             //Initialize the database connections
 
 
-            TrackerLibrary.GlobalConfig.InitializeConnections(DatabaseType.TextFile);
+            TrackerLibrary.GlobalConfig.InitializeConnections();
             
             
 
             // Application.Run(new TournamentDashBoardForm());
-            Application.Run(new CreateTournamentForm());
+            Application.Run(new TournamentDashBoardForm());
         }
     }
 }
