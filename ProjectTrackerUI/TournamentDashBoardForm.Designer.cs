@@ -59,17 +59,18 @@
             // 
             // loadExTournDropDownBox
             // 
+            this.loadExTournDropDownBox.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loadExTournDropDownBox.FormattingEnabled = true;
             this.loadExTournDropDownBox.Location = new System.Drawing.Point(76, 103);
             this.loadExTournDropDownBox.Name = "loadExTournDropDownBox";
-            this.loadExTournDropDownBox.Size = new System.Drawing.Size(284, 25);
+            this.loadExTournDropDownBox.Size = new System.Drawing.Size(284, 31);
             this.loadExTournDropDownBox.TabIndex = 17;
             // 
             // loadTournButton
             // 
             this.loadTournButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.loadTournButton.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.loadTournButton.Location = new System.Drawing.Point(157, 134);
+            this.loadTournButton.Location = new System.Drawing.Point(156, 140);
             this.loadTournButton.Name = "loadTournButton";
             this.loadTournButton.Size = new System.Drawing.Size(109, 29);
             this.loadTournButton.TabIndex = 18;

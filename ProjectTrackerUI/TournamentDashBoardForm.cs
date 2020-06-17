@@ -45,6 +45,9 @@ namespace ProjectTrackerUI
 
         private void loadTournButton_Click(object sender, EventArgs e)
         {
+            TournamentModel tm = (TournamentModel)loadExTournDropDownBox.SelectedItem;
+            TournamentViewer frm = new TournamentViewer(tm);
+            frm.Show();
 
         }
 

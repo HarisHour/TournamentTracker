@@ -58,9 +58,10 @@
             // 
             this.tournamentName.AccessibleName = "tournamentName";
             this.tournamentName.AutoSize = true;
-            this.tournamentName.Location = new System.Drawing.Point(187, 25);
+            this.tournamentName.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tournamentName.Location = new System.Drawing.Point(175, 30);
             this.tournamentName.Name = "tournamentName";
-            this.tournamentName.Size = new System.Drawing.Size(118, 38);
+            this.tournamentName.Size = new System.Drawing.Size(102, 32);
             this.tournamentName.TabIndex = 1;
             this.tournamentName.Text = "<none>";
             // 
@@ -78,10 +79,11 @@
             // roundDropdown
             // 
             this.roundDropdown.AccessibleName = "roundDropdown";
+            this.roundDropdown.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.roundDropdown.FormattingEnabled = true;
-            this.roundDropdown.Location = new System.Drawing.Point(103, 78);
+            this.roundDropdown.Location = new System.Drawing.Point(103, 86);
             this.roundDropdown.Name = "roundDropdown";
-            this.roundDropdown.Size = new System.Drawing.Size(185, 45);
+            this.roundDropdown.Size = new System.Drawing.Size(185, 31);
             this.roundDropdown.TabIndex = 3;
             // 
             // unplayedOnlyCheckbox
