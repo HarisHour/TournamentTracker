@@ -17,6 +17,7 @@ namespace ProjectTrackerUI
 
         private TournamentModel tournament;
         List<int> rounds = new List<int>();
+        List<MatchupModel> selectedMatchups = new List<MatchupModel>();
 
         public TournamentViewer(TournamentModel tournamentModel)
         {
@@ -25,15 +26,28 @@ namespace ProjectTrackerUI
             tournament = tournamentModel;
 
             LoadFormData();
+            LoadRounds();
         }
 
      
-        private void WireUpLists()
+        private void WireUpRoundsLists()
         {
             roundDropdown.DataSource = null;
             roundDropdown.DataSource = rounds;
+
+            matchUpListbox.DataSource = null;
+            matchUpListbox.DataSource = selectedMatchups;
+            matchUpListbox.DisplayMember = "DisplayName";
         }
-       
+
+        private void WireUpMatchupsLists()
+        {
+
+            matchUpListbox.DataSource = null;
+            matchUpListbox.DataSource = selectedMatchups;
+            matchUpListbox.DisplayMember = "DisplayName";
+        }
+
         private void LoadFormData()
         {
             tournamentName.Text = tournament.TournamentName;
@@ -43,6 +57,7 @@ namespace ProjectTrackerUI
 
         private void LoadRounds()
         {
+            rounds = new List<int>();
             rounds.Add(1);
             int currRound = 1;
 
@@ -56,7 +71,28 @@ namespace ProjectTrackerUI
                 }
             }
 
-            WireUpLists();
+            WireUpRoundsLists();
+        }
+
+        private void roundDropdown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadMatchups();
+        }
+
+        private void LoadMatchups()
+        {
+            int round = (int)roundDropdown.SelectedItem;
+
+            foreach (List<MatchupModel> matchups in tournament.Rounds)
+            {
+                if (matchups.First().MatchupRound == round)
+                {
+                    selectedMatchups = matchups;
+
+                }
+            }
+
+            WireUpMatchupsLists();
         }
 
     }
