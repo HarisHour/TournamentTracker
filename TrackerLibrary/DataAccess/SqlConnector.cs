@@ -196,6 +196,30 @@ namespace TrackerLibrary.DataAccess
             }
         }
 
+        public void UpdateMatchup(MatchupModel model)
+        {
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GlobalConfig.CnnString("Tournaments")))
+            {
+                var t = new DynamicParameters();
+                t.Add("@id", model.Id);
+                t.Add("@WinnerId", model.WinnerId);
+                
+
+                connection.Execute("dbo.spMatchups_Update", t, commandType: CommandType.StoredProcedure);
+                
+                foreach(MatchupEntryModel me in model.Entries)
+                {
+                    var p = new DynamicParameters();
+                    p.Add("@id", me.Id);
+                    p.Add("@TeamCompetingId", me.TeamCompetingId);
+                    p.Add("@Score", me.Score);
+
+                    connection.Execute("dbo.spMatchupEntries_Update", p, commandType: CommandType.StoredProcedure);
+                }
+            
+            }
+        }
+
         public List<PersonModel> GetPerson_All()
         {
             List<PersonModel> personList;
